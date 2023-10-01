@@ -1,5 +1,5 @@
 const User = require("../model/User")
-const bcrypt = require("bcrypt")
+const bcryptjs = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 
 // Route to create user
@@ -7,7 +7,7 @@ const createUser = async (req, res) => {
 
     try {
 
-        bcrypt.hash(req.body.password, 10)
+        bcryptjs.hash(req.body.password, 10)
         .then(async hashPassword => {
             const user = new User({
                 name: req.body.name,
@@ -46,7 +46,7 @@ const loginUser = async (req,res) => {
         User.findOne({ email: req.body.email })
         .then(user => {
             console.log(user)
-            bcrypt.compare(req.body.password,user.password)
+            bcryptjs.compare(req.body.password,user.password)
             .then(passwordCheck => {
                 if (!passwordCheck) {
                     res.status(400).json({
